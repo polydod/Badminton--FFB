@@ -7,7 +7,7 @@ function searchJoueurDB($db,$asw)
 												  OR prenom_joueur LIKE ?;');
 	$answer = '%' . $asw . '%';
 	$reponse->execute(array($answer,$answer,$answer));
-	if ($reponse->rowCount() == 0) {
+	if ($reponse->rowCount() == 0 or $asw == "") {
 		echo "Aucune ligne ne correspond à la requête.";
 	}
 	else
@@ -41,6 +41,27 @@ function searchJoueurDB($db,$asw)
 function insertJoueurDB($db,$licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ)
 {
 	$reponse = $db->prepare('INSERT INTO joueur VALUES (?,?,?,?,?,?,?)');
-	$reponse->execute(array($licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ));
-	echo "fait";
+	if ($licence!="" and $nom!="" and $prenom!="" and $date_naiss!="" and $date_premiere_licence!="" and $club!="" and $categ!="")
+	{
+		$reponse->execute(array($licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ));
+		echo "Joueur inséré";
+	}
+	else
+	{
+		echo "Vous n'avez pas rempli toutes les valeurs";
+	}
+}
+
+function deleteJoueurDB($db,$licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ)
+{
+	$reponse = $db->prepare('DELETE FROM joueur WHERE (?,?,?,?,?,?,?)');
+	if ($licence!="" and $nom!="" and $prenom!="" and $date_naiss!="" and $date_premiere_licence!="" and $club!="" and $categ!="")
+	{
+		$reponse->execute(array($licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ));
+		echo "Joueur inséré";
+	}
+	else
+	{
+		echo "Vous n'avez pas rempli toutes les valeurs";
+	}
 }
