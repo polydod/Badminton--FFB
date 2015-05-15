@@ -9,19 +9,19 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="C:\wamp\www\badminton_ffb\Web\">Accueil</a>
+                <a class="navbar-brand" href="\badminton_ffb\Web\">Accueil</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="C:\wamp\www\badminton_ffb\Web\badistes\index.php">Badistes</a>
+                        <a href="\badminton_ffb\Web\badistes\">Badistes</a>
                     </li>
                     <li>
-                        <a href="C:\wamp\www\badminton_ffb\Web\clubs\index.php">Clubs</a>
+                        <a href="\badminton_ffb\Web\clubs\">Clubs</a>
                     </li>
                     <li>
-                        <a href="C:\wamp\www\badminton_ffb\Web\categories\index.php">Categories</a>
+                        <a href="\badminton_ffb\Web\categories\">Categories</a>
                     </li>
                 </ul>
             </div>
