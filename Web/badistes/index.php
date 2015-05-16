@@ -4,7 +4,8 @@
 <?php include("../header.php"); ?>
 
 <body>
-	<?php include("../menu.php"); 
+	<?php 
+	include("../menu.php"); 
 	include ("../connexionBD.php");
 	include("../SQLrequest.php");
 	$bdd = connectionDB();
@@ -26,15 +27,7 @@
 						<input type="submit" value="Rechercher" />
 					</p>
 					</form>
-					<?php 
-						#$licence=(isset($_POST["asw"])) ? $_POST["asw"] : "";
-						#$licence!="" ? searchJoueurDB($bdd,$licence) : "";
-						if (isset($_POST["asw"]))
-						{
-							$licence = $_POST["asw"];
-							searchJoueurDB($bdd,$licence);
-						}
-					?>
+					<?php searchJoueurDB($bdd);?>
                 </ul>
 				<ul class="joueur_insert_delete">
 					<p>
@@ -66,28 +59,7 @@
 						<input type="submit" value="Supprimer" name="delete" id="delete" />	
 					</p>
 					</form>
-					<?php 
-					$licence=(isset($_POST["licence"])) ? $_POST["licence"] : "";
-					$nom=(isset($_POST["nom"])) ? $_POST["nom"] : "";
-					$prenom=(isset($_POST["prenom"])) ? $_POST["prenom"] : "";
-					$date_naiss=(isset($_POST["date_naiss"])) ? $_POST["date_naiss"] : "";
-					$date_prem=(isset($_POST["date_prem"])) ? $_POST["date_prem"] : "";
-					if (isset($_POST["insert"]))
-					{
-						#$licence!="" ? searchJoueurDB($bdd,$licence) : "";
-						if(isset($_POST["licence"]) and isset($_POST["nom"]) and isset($_POST["prenom"]) and isset($_POST["date_naiss"]) and isset($_POST["date_prem"]))
-						{
-							insertJoueurDB($bdd,$licence,$nom,$prenom,$date_naiss,$date_prem,1,3);
-						}
-					}
-					if (isset($_POST["delete"]))
-					{
-						if(isset($_POST["licence"]) and isset($_POST["nom"]) and isset($_POST["prenom"]) and isset($_POST["date_naiss"]) and isset($_POST["date_prem"]))
-						{
-							deleteJoueurDB($bdd,$licence,$nom,$prenom,$date_naiss,$date_prem,1,3);
-						}
-					}
-					?>
+					<?php formValidationJoueur($bdd);?>
 				</ul>
 				
             </div>
