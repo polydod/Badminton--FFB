@@ -12,11 +12,16 @@ function searchJoueurDB($db)
 	{
 		$res = $_POST["asw"];
 		#$reponse = $db->query('SELECT * FROM joueur WHERE licence = ' . $licence . ';');
-		$reponse = $db->prepare('SELECT * FROM joueur WHERE licence LIKE ? 
-													  OR nom_joueur LIKE ?
-													  OR prenom_joueur LIKE ?;');
+		$reponse = $db->prepare('SELECT * FROM joueur j, club cl, categorie ca WHERE j.categorie_id = ca.categorie_id
+																			AND j.club_id = cl.club_id
+																			AND (j.licence LIKE ? 
+																			OR j.nom_joueur LIKE ?
+																			OR j.prenom_joueur LIKE ?
+																			OR cl.nom_club LIKE ?
+																			OR ca.nom_categorie LIKE ?)
+																			ORDER BY j.licence ASC;');
 		$answer = '%' . $res . '%';
-		$reponse->execute(array($answer,$answer,$answer));
+		$reponse->execute(array($answer,$answer,$answer,$answer,$answer));
 		if ($reponse->rowCount() == 0 or $res == "") {
 			echo "Aucune ligne ne correspond à la requête.";
 		}
@@ -29,9 +34,10 @@ function searchJoueurDB($db)
 			   <th>Nom</th>
 			   <th>Prenom</th>
 			   <th>Date de naissance</th>
-			   <th>Date de premiere inscription</th>
+			   <th>Date premiere licence</th>
 			   <th>Club</th>
 			   <th>Categorie</th>
+			   <th>Photos du joueur</th>
 			</tr>
 			<?php
 			while ($donnees = $reponse->fetch()) #stop when all data from sql request are showed
@@ -43,8 +49,10 @@ function searchJoueurDB($db)
 					<td><?php echo $donnees['prenom_joueur']?></td>
 					<td><?php echo $donnees['date_naissance']?></td>
 					<td><?php echo $donnees['date_premiere_inscription']?></td>
-					<td><?php echo $donnees['club_id']?></td>
-					<td><?php echo $donnees['categorie_id']?></td>
+					<td><?php echo $donnees['nom_club']?></td>
+					<td><?php echo $donnees['nom_categorie']?></td>
+					<td><?php $image = $donnees['image_url'];
+							  print '<img src="'.$image.'" width="120" height ="70" alt="Photo du joueur" />'?></td>
 				</tr>
 				<?php
 			}
@@ -56,7 +64,7 @@ function searchJoueurDB($db)
 	}
 	else
 	{
-		echo "Exemple : 100100 - Dana - Salomon";
+		#echo "Exemple : 100100 - Dana - Salomon";
 	}
 }
 
@@ -68,12 +76,13 @@ function formValidationJoueur($db)
 	$nom=(isset($_POST["nom"])) ? trim($_POST["nom"]) : "";
 	$prenom=(isset($_POST["prenom"])) ? trim($_POST["prenom"]) : "";
 	$date_naiss=(isset($_POST["date_naiss"])) ? trim($_POST["date_naiss"]) : "";
-	$date_premiere_licence=(isset($_POST["date_prem"])) ? trim($_POST["date_prem"]) : "";
-	$club = 15;
+	$club=(isset($_POST["club"])) ? trim($_POST["club"]) : "";
+	$date_premiere_licence = date('Y').'-'.date('m').'-'.date('d');
 	$categ = 2;
+	$image = "http://www.google.fr/url?source=imglanding&ct=img&q=http://ccbonline.fr/ccb/IMG/jpg/sticker-joueur-badminton-57x77-cm-decoration-868554139_ml-2.jpg&sa=X&ei=krpYVfL9FczWUcbHgZgC&ved=0CAkQ8wc&usg=AFQjCNHzEqIV36LMABjLUlZ4f2pyw3X9Hg";
 	if (isset($_POST["insert"]))
 	{
-		insertJoueurDB($db,$licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ);
+		insertJoueurDB($db,$licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ,$image);
 	}
 	if (isset($_POST["delete"]))
 	{
@@ -84,12 +93,12 @@ function formValidationJoueur($db)
 
 #Input : informations relative to a player (joueur)
 #Result : insert a player in database "joueur"
-function insertJoueurDB($db,$licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ)
+function insertJoueurDB($db,$licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ,$image)
 {
-	$reponse = $db->prepare('INSERT INTO joueur VALUES (?,?,?,?,?,?,?)');
+	$reponse = $db->prepare('INSERT INTO joueur VALUES (?,?,?,?,?,?,?,?)');
 	if ($licence!="" and $nom!="" and $prenom!="" and $date_naiss!="" and $date_premiere_licence!="" and $club!="" and $categ!="")
 	{
-		$reponse->execute(array($licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ));
+		$reponse->execute(array($licence,$nom,$prenom,$date_naiss,$date_premiere_licence,$club,$categ,$image));
 		echo "Joueur inséré";
 	}
 	else
@@ -162,7 +171,7 @@ function searchClubDB($db)
 	}
 	else
 	{
-		echo "Exemple : 1 - MBC - Montpellier";
+		#echo "Exemple : 1 - MBC - Montpellier";
 	}
 }
 
@@ -265,7 +274,7 @@ function searchCategDB($db)
 	}
 	else
 	{
-		echo "Exemple : 2 - Poussin - 10 - 11";
+		#echo "Exemple : 2 - Poussin - 10 - 11";
 	}
 }
 

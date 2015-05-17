@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
-
-<?php include("../header.php"); ?>
+	
+<head>
+	<?php include("../header.php"); ?>
+</head>
 
 <body>
 	<?php 
@@ -15,48 +17,62 @@
 
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1>Categories de badminton - Fédération Française de Badminton</h1>
-                <p class="lead">Okok cest bon</p>
-                <ul class="categ_table_recherche">
-                    <p>
-						Recherche d'une categorie par numéro, nom, age de début ou age de fin : <br />
-					</p>
-					<form name="search" action="" method="post">
-					<p>
-						<input type="text" name="asw" />
-						<input type="submit" value="Rechercher" />
-					</p>
-					</form>
-					<?php searchCategDB($bdd);?>
-                </ul>
-				<ul class="categ_insert_delete">
-					<p>
-						Insertion / suppression d'une categorie <br />
-					</p>
+                <h1>Categories de badminton</h1>
+                <p class="lead">Fédération Française de Badminton</p>
+				
+				<!-- left div -->
+				<div class="left">
+				
+					<!--Search content -->
+					<div class="search">
+						<p class ="search_title"> Recherche d'une categorie par numéro, nom, age de début ou age de fin : </p>
+						<form name="search" action="" method="post">
+						<p>
+							<input type="text" name="asw" placeholder="Exemple : Poussin" />
+							<input type="submit" value="Rechercher" />
+						</p>
+						</form>
+					</div>
+					<!-- /.search -->
+					
+					<!-- Result content -->
+					<div class="result">
+						<?php searchCategDB($bdd);?>
+					</div>
+					<!-- ./result -->
+					
+				</div>
+				<!-- ./left -->
+				
+				<!-- insertion and deletion content -->
+				<div class="insert_delete">
+					<p class ="insert_delete_title"> Insertion / suppression d'une categorie</p>
 					<form name="insert_delete "action="" method="post">
 					<p>
 					<div>
 						<label for="categorie_id">Numero de categorie :</label>
-						<input type="text" name="categorie_id" id="categorie_id" />
+						<input type="text" name="categorie_id" id="categorie_id" required />
 					</div>
 					<div>
 						<label for="nom_categorie">Nom de categorie :</label>
-						<input type="text" name="nom_categorie" id="nom_categorie" />
+						<input type="text" name="nom_categorie" id="nom_categorie" required />
 					</div>
 					<div>
 						<label for="age_debut">Age de début : </label>
-						<input type="text" name="age_debut" id="age_debut" />
+						<input type="text" name="age_debut" id="age_debut" required />
 					</div>
 					<div>
 						<label for="age_fin">Age de fin :</label>
-						<input type="text" name="age_fin" id="age_fin" />
+						<input type="text" name="age_fin" id="age_fin" required />
 					</div>
+					</br>
 						<input type="submit" value="Insérer" name="insert" id="insert" />	
 						<input type="submit" value="Supprimer" name="delete" id="delete" />	
 					</p>
 					</form>
 					<?php formValidationCateg($bdd);?>
-				</ul>
+				</div>
+				<!-- ./insert_delete -->
 				
             </div>
         </div>

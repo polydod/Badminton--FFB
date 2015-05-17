@@ -131,3 +131,33 @@ WHERE year(date_naissance) <= (SELECT year(NOW())-10) and  year(date_naissance) 
 
 UPDATE Joueur SET categorie_id = 1
 WHERE year(date_naissance) > (SELECT year(NOW())-10)
+
+
+#TRIGGERS
+CREATE TRIGGER upd_check_categ_joueur BEFORE UPDATE ON joueur
+ FOR EACH ROW
+ BEGIN
+    CASE 
+		SET NEW.categorie_id=CASE 
+			WHEN NEW.year(dateNaiss) <= (SELECT year(NOW())-40) THEN =8
+			WHEN NEW.year(dateNaiss) <= (SELECT year(NOW())-20) and  year(dateNaiss) > (SELECT year(NOW())-40) THEN = 7
+			WHEN NEW.year(dateNaiss) <= (SELECT year(NOW())-18) and  year(dateNaiss) > (SELECT year(NOW())-20) THEN = 6
+			WHEN NEW.year(dateNaiss) <= (SELECT year(NOW())-16) and  year(dateNaiss) > (SELECT year(NOW())-18) THEN = 5
+			WHEN NEW.year(dateNaiss) <= (SELECT year(NOW())-14) and  year(dateNaiss) > (SELECT year(NOW())-16) THEN = 4
+			WHEN NEW.year(dateNaiss) <= (SELECT year(NOW())-12) and  year(dateNaiss) > (SELECT year(NOW())-14) THEN = 3
+			WHEN NEW.year(dateNaiss) <= (SELECT year(NOW())-10) and  year(dateNaiss) > (SELECT year(NOW())-12) THEN = 2
+			WHEN NEW.year(dateNaiss) > (SELECT year(NOW())-10) THEN = 1
+	END CASE;
+ END;
+
+ IF NEW.year(dateNaiss) <= (SELECT year(NOW())-40) THEN SET NEW.categorie_id=8;
+ ELSEIF NEW.year(dateNaiss) <= (SELECT year(NOW())-20) and  year(dateNaiss) > (SELECT year(NOW())-40) THEN SET NEW.categorie_id= 7;
+ ELSEIF NEW.year(dateNaiss) <= (SELECT year(NOW())-18) and  year(dateNaiss) > (SELECT year(NOW())-20) THEN SET NEW.categorie_id=6;
+ ELSEIF NEW.year(dateNaiss) <= (SELECT year(NOW())-16) and  year(dateNaiss) > (SELECT year(NOW())-18) THEN SET NEW.categorie_id= 5;
+ ELSEIF NEW.year(dateNaiss) <= (SELECT year(NOW())-14) and  year(dateNaiss) > (SELECT year(NOW())-16) THEN SET NEW.categorie_id= 4;
+ ELSEIF NEW.year(dateNaiss) <= (SELECT year(NOW())-12) and  year(dateNaiss) > (SELECT year(NOW())-14) THEN SET NEW.categorie_id= 3;
+ ELSEIF NEW.year(dateNaiss) <= (SELECT year(NOW())-10) and  year(dateNaiss) > (SELECT year(NOW())-12) THEN SET NEW.categorie_id= 2;
+ ELSEIF NEW.year(dateNaiss) > (SELECT year(NOW())-10) THEN SET NEW.categorie_id= 1;
+ END IF;
+ 
+ 
